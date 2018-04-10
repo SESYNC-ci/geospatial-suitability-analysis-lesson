@@ -1,15 +1,29 @@
 # Site
 
-title:
+title: Intersections, Zonal Statistics, and Distance
+subtitle: Conservation Suitability in Florida
 handouts:
-tag:
-lesson:
-instructor:
+ - worksheet.R
+ - data/Strat_hab_con_areas1
+ - data/Regional_Counties
+ - data/roads_counts
+ - data/Priority_Wet_Habitats1
+ - data/Clay_Parcels
+ - data/Habitat
+ - data/Biodiversity_Hot_Spots1
+ - data/flma_jun13
+ - data/focus_zone1
+ - data/README.md
+tag: v0.0
+lesson: 5
+instructor: Benoit Parmentier
 authors:
+ - Benoit Parmentier
 
 # Slides
 
 slide_sorter:
+ - complete
 
 #####################################
 # Only modify content above or risk #
