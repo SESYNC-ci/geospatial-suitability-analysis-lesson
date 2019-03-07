@@ -1,7 +1,8 @@
 ####################################   Suitability Analysis   #######################################
 ############################  Selection of parcels for conservation   #######################################
-# This script performs basic analyses for the Exercise 3 of the workshop using Florida data.
-# The overall goal is to perform a multi-criteria/sustainabiltiy analysis to select areas suitable 
+# This script performs basic analyses for the Exercise 3 of the AGG and SESYNC Geospatial Analysis course.
+# We are using data from the state of Florida.The overall goal is to perform a analysis with 
+# multi-criteria/sustainabiltiy analysis to select areas suitable 
 # for conservation.     
 #
 #Goal: Determine the ten (10) parcels of land within Clay County in the focus zone most suitable for purchase
@@ -9,12 +10,12 @@
 #
 #AUTHORS: Benoit Parmentier                                             
 #DATE CREATED: 03/17/2017 
-#DATE MODIFIED: 04/02/2018
+#DATE MODIFIED: 02/26/2019
 #Version: 2
-#PROJECT: SESYNC and AAG 2018 workshop/Short Course preparation
+#PROJECT: SESYNC and AAG 2019 workshop/Short Course preparation
 #TO DO:
 #
-#COMMIT: testing code on virtual machine, AAG workshop
+#COMMIT: general modif and adding sf
 #
 #################################################################################################
 
