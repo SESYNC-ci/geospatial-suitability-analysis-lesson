@@ -157,17 +157,18 @@ lapply(list_raster,function(x){extent(x)}) #extent of rasters
 ## Let's use the resolution 55x55 m as the reference since it corresponds to finer resolution relevant
 # for this study. The focus region provides the extent for the final step.
 ## Select clay county
-clay_county_sp <- subset(reg_counties_sp,NAME=="CLAY")
+clay_county_sf <- subset(reg_counties_sf,NAME=="CLAY")
 
 plot(r_strat_hab, main="strategic habitat")
 
 ## Crop r_strat_hab
-r_ref <- crop(r_strat_hab,clay_county_sp) #make a reference image for use in the processing
-plot(r_ref)
-plot(clay_county_sp,border="red",add=T)
+r_ref <- crop(r_strat_hab,as.vector(st_bbox(clay_county_sf))[c(1, 3, 2, 4)]) #make a reference image for use in the processing
 
-r_clay <- rasterize(clay_county_sp,r_ref) #this can be used as mask for the study area
+plot(r_ref)
+plot(clay_county_sf$geometry,border="red",add=T)
+r_clay <- rasterize(clay_county_sf,r_ref) #this can be used as mask for the study area
 freq(r_clay) #check the distribution of values: 1 and NA 
+
 ##Use raster of Clay county definining the study area to mask pixels
 plot(r_clay)
 dim(r_clay) #number of rows and columns as well as number of layers/bands
@@ -207,11 +208,10 @@ plot(rc_strat_hab_reg,main="Reclassified Strategic Habit in Clay County")
 ### STEP 2: Identify Lands With High Native Biodiversity based on species count 
 
 ## Crop bio raster
-r_bio_hotspot_w <- crop(r_bio_hotspot,clay_county_sp)
+r_bio_hotspot_w <- crop(r_bio_hotspot,as.vector(st_bbox(clay_county_sf))[c(1, 3, 2, 4)])
 plot(r_bio_hotspot_w)
-plot(clay_county_sp,border="red",add=T)
+plot(clay_county_sf$geometry,border="red",add=T)
 
-#r_bio_clay_masked <- mask(r_bio_hotspot_w,r_clay) ## Does not work!! because resolution don't match
 #match resolution:
 projection(r_bio_hotspot_w)==projection(r_clay) #projection match
 res(r_bio_hotspot_w)==res(r_clay) #the resolutions do not match, we will need to resample
@@ -219,12 +219,11 @@ res(r_bio_hotspot_w)==res(r_clay) #the resolutions do not match, we will need to
 ## Find about resample
 #?raster::resample #to find out about the resample function from the raster package
 r_bio_hotspot_reg <- raster::resample(x=r_bio_hotspot_w,y=r_clay, method="bilinear") #Use resample to match resolutions
-
 r_bio_hotspot_reg <- mask(r_bio_hotspot_reg,r_clay) ## It now works because resolutions were matched
 plot(r_bio_hotspot_reg,main="Resampled biodiversity layer to 55m")
 
 ### Reclassify using instructions/information given to us:
- 
+
 m <- c(9, 1000, 9,  
        5, 8, 8,  
        3, 4, 7,  
@@ -249,15 +248,14 @@ plot(rc_bio_hotspot_reg, main="Bio hotspot reclassified")
 projection(r_priority_wet_hab)
 
 ## Crop Wetland priority raster
-r_priority_wet_hab_w <- crop(r_priority_wet_hab,clay_county_sp)
+r_priority_wet_hab_w <- crop(r_priority_wet_hab,as.vector(st_bbox(clay_county_sf))[c(1, 3, 2, 4)])
 
-#r_priority_wet_hab_reg <- mask(r_priority_wet_hab_w,r_clay) ## Does not work!! because resolution don't match
 #match resolution:
 r_priority_wet_hab_reg <- raster::resample(r_priority_wet_hab_w,r_clay, method='bilinear') #resolution matching the study region
 
-#r_priority_wet_hab_reg <- mask(r_priority_wet_hab_reg,r_clay) ## Does not work!! because resolution don't match
+#r_priority_wet_hab_reg <- mask(r_priority_wet_hab_reg,r_clay) ## Does not work!! because resolution doesn't match
 plot(r_priority_wet_hab_reg,main="Priority Wetland Habitat resampled")
-plot(clay_county_sp,border="red",add=T)
+plot(clay_county_sf$geometry,border="red",add=T)
 
 ### Now reclass
 #The value of 9 was assigned to 10–12 wetland focal species, 8 was assigned to 7–9 wetland focal
@@ -276,7 +274,7 @@ rc_priority_wet_hab_reg <- reclassify(r_priority_wet_hab_reg, rclmat)
 freq_tb <- freq(rc_priority_wet_hab_reg)
 freq_tb
 plot(rc_priority_wet_hab_reg,main="Priority Wetland Habitat reclassified")
-plot(clay_county_sp,border="red",add=T)
+plot(clay_county_sf$geometry,border="red",add=T)
 
 ### STEP 4: Combine all the three input criteria layers with weigthed/unweighted sum
 
