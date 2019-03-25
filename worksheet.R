@@ -286,8 +286,7 @@ r_bio_ws_factor <- (f_weights[1]*rc_strat_hab_reg + f_weights[2]*rc_bio_hotspot_
 
 r_bio_factor <- stack(r_bio_es_factor,r_bio_ws_factor)
 names(r_bio_factor) <- c("equal_weights","weigthed_sum")
-#plot(r_bio_factor,main="Bio factor for suitability analysis")
-plot(r_bio_factor)
+plot(r_bio_factor,main="Bio factor for suitability analysis")
 
 out_suffix_str <- paste0(names(r_bio_factor),"_",out_suffix) # this needs to be matching the number of outputs files writeRaste
 
@@ -308,19 +307,21 @@ writeRaster(r_bio_factor,filename="r_bio_factor_clay.tif",
 ### Processs roads first
 plot(r_roads,main="Roads_count in Clay county")
 r_roads_bool <- r_roads > 0
+plot(clay_county_sf$geometry,border="red",add=T)
 NAvalue(r_roads_bool ) <- 0 
 roads_bool_fname <- file.path(out_dir,paste0("roads_bool_",out_suffix,file_format))
 r_roads_bool <- writeRaster(r_roads_bool,filename=roads_bool_fname,overwrite=T)
 
 #setp 2: prepare files to create a distance to existing managed land
 
-r_flma_clay <- rasterize(flma_sp,r_clay,"OBJECTID_1",fun="max")
+r_flma_clay <- rasterize(flma_sf,r_clay,"OBJECTID_1",fun="max")
+
 r_flma_clay_bool <- r_flma_clay > 0
 NAvalue(r_flma_clay_bool) <- 0 
 r_flma_clay_bool_fname <- file.path(out_dir,paste0("r_flma_clay_bool_",out_suffix,file_format))
 r_flma_clay_bool <- writeRaster(r_flma_clay_bool,filename=r_flma_clay_bool_fname,overwrite=T)
 plot(r_flma_clay_bool,"Management areas in Clay County")
-plot(clay_county_sp,border="red",add=T)
+plot(clay_county_sf$geometry,border="red",add=T)
 
 if(gdal_installed==TRUE){
   
