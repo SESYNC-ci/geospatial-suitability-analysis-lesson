@@ -383,13 +383,13 @@ r_flma_dist <- r_flma_distance * a
 #IDENTIFY POTENTIAL CONSERVATION LANDS IN RELATION TO PARCEL SUITABILITY
 #GOAL: Create two raster maps showing parcels in Clay County, Florida that have would 
 #have higher conservation potential based on parcel values.
-#First, factors must be combined to generate a suitability index.
+#First, factors must be combin  ed to generate a suitability index.
 
 ### Step 1:  Combine distance factors with weights...
 f_weights <- c(1,1)/2 #factor weights for distance to roads
 r_dist_factor <- f_weights[1]*r_roads_dist + f_weights[2]*r_flma_dist #weighted sum with equal weight
 
-### Step 3: Combine distance factor and bio factor
+### Step 2: Combine distance factor and bio factor
 f_weights <- c(2/3,1/3) #We are weighting factor bio more for this exercise
 r_suitability_factor <- f_weights[1]*r_bio_factor + f_weights[2]*r_dist_factor #weighted sum with equal weight
 names(r_suitability_factor) <- c("suitability1","suitability2")
@@ -400,30 +400,28 @@ out_suffix_str <- paste0(names(r_suitability_factor),"_",out_suffix) # this need
 writeRaster(r_suitability_factor,filename="r_suitability_factor_clay.tif",
             bylayer=T,datatype="FLT4S",options="COMPRESS=LZW",suffix=out_suffix_str,overwrite=T)
 
-### Write out later
-#writeRaster(,"bio_factor_equal_weights.tif")
-#writeRaster(subset(r_bio_factor,1),"bio_factor_equal_weights.tif")
-
-# Step 3: summarize by parcels!!
+### Step 3: summarize by parcels!!
 
 projection(r_focus_zone1)<- projection(r_clay)
 
-clay_sp_parcels_reg <- spTransform(clay_sp,projection(r_clay))
+clay_sp_parcels_reg <- st_transform(clay_sf,projection(r_clay))
 
-parcels_focus_zone1_sp <- intersect(clay_sp_parcels_reg,r_focus_zone1)
+focus_zone1_sf <- st_as_sfc(st_bbox(r_focus_zone1))
 
-parcels_avg_suitability <- extract(r_suitability_factor,parcels_focus_zone1_sp,fun=mean,sp=T)
-#spplot(parcels_avg_suitability,"equal_weights")
+parcels_focus_zone1_sf <- st_intersection(clay_sp_parcels_reg,focus_zone1_sf)
+
+parcels_avg_suitability <- extract(r_suitability_factor,parcels_focus_zone1_sf,fun=mean,sp=T) #takes about 2 minutes, check on docker!!
 
 ## Select top 10 parcels to target for conservation
 parcels_avg_suitability <- parcels_avg_suitability[order(parcels_avg_suitability$suitability1,decreasing = T),] 
 plot(parcels_avg_suitability$suitability1,main="Suitability index by parcel in focus zone 1")
 
-p<- spplot(parcels_avg_suitability[1:10,],"suitability1",main="Selected top 10 parcels for possible conservation")
+p <- spplot(parcels_avg_suitability[1:10,],"suitability1",main="Selected top 10 parcels for possible conservation")
 print(p)
 
 ##Figure of selected parcels
-plot(clay_county_sp,border="red",main="Selected parcels")
+plot(clay_county_sf$geometry,border="red",main="Selected parcels")
 plot(parcels_avg_suitability[1:10,],add=T)
+plot(focus_zone1_sf,add=T)
 
 ##############################   END OF SCRIPT    ##########################################
