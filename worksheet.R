@@ -10,7 +10,7 @@
 #
 #AUTHORS: Benoit Parmentier                                             
 #DATE CREATED: 03/17/2017 
-#DATE MODIFIED: 02/26/2019
+#DATE MODIFIED: 03/25/2019
 #Version: 2
 #PROJECT: SESYNC and AAG 2019 workshop/Short Course preparation
 #TO DO:
@@ -65,8 +65,8 @@ create_dir_fun <- function(outDir,out_suffix=NULL){
 
 #####  Parameters and argument set up ###########
 
-in_dir_var <- "../data"
-out_dir <- "."
+in_dir_var <- "/nfs/bparmentier-data/Data/workshop_spatial/sesync2019_geospatial_workshop/Exercise_3/data"
+out_dir <- "/nfs/bparmentier-data/Data/workshop_spatial/sesync2019_geospatial_workshop/Exercise_3/outputs"
 
 strat_hab_fname <- "Strat_hab_con_areas1.tif" #1)Strategic Habitat conservation areas raster file
 regional_counties_fname <- "Regional_Counties.shp" #2) County shapefile
@@ -85,7 +85,7 @@ focus_zone1_filename <- "focus_zone1.tif" #9) focus zone as raster file
 gdal_installed <- FALSE #if true use the system/shell command else use the distance layer provided
 file_format <- ".tif" #PARAM5
 NA_flag_val <- -9999 #PARAM7
-out_suffix <-"exercise3_04022018" #output suffix for the files and ouptu folder #PARAM 8
+out_suffix <-"exercise3_03212019" #output suffix for the files and ouptu folder #PARAM 8
 create_out_dir_param=TRUE #PARAM9
 
 ################# START SCRIPT ###############################
@@ -93,7 +93,7 @@ create_out_dir_param=TRUE #PARAM9
 ## First create an output directory
 
 if(is.null(out_dir)){
-  out_dir <- dirname(in_dir) #output will be created in the input dir
+  out_dir <- dirname(in_dir_var) #output will be created in the input dir
 }
 
 out_suffix_s <- out_suffix #can modify name of output suffix
@@ -119,23 +119,23 @@ if(create_out_dir_param==TRUE){
 
 ## Read in the datasets
 r_strat_hab <- raster(file.path(in_dir_var,strat_hab_fname))
-reg_counties_sp <- readOGR(dsn=in_dir_var,sub(".shp","",basename(regional_counties_fname))) 
+reg_counties_sf <- st_read(file.path(in_dir_var,regional_counties_fname)) 
 
 r_roads <- raster(file.path(in_dir_var,roads_fname))
 r_priority_wet_hab <- raster(file.path(in_dir_var,priority_wet_habitats_fname))
 
-clay_sp <- readOGR(dsn=in_dir_var,sub(".shp","",basename(clay_parcels_fname))) #large file
+clay_sf <- st_read(file.path(in_dir_var,clay_parcels_fname)) #large file
 
 r_habitat <- raster(file.path(in_dir_var,habitat_fname))
 r_bio_hotspot <- raster(file.path(in_dir_var,biodiversity_hotspot_fname))
 
-flma_sp <- readOGR(dsn=in_dir_var,sub(".shp","",basename(florida_managed_areas_fname))) 
+flma_sf <- st_read(file.path(in_dir_var,florida_managed_areas_fname)) 
 
 r_focus_zone1 <- raster(file.path(in_dir_var,focus_zone1_filename))
 
 ## Visualize a few datasets
 plot(r_strat_hab, main="strategic habitat")
-plot(reg_counties_sp,add=T)
+plot(reg_counties_sf$geometry,add=T)
 
 plot(r_priority_wet_hab, main="Priority wetland habitat")
 #plot(r_habitat,add=T)
