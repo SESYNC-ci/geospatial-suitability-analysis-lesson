@@ -3,7 +3,7 @@
 # This script performs basic analyses for the Exercise 3 of the AGG and SESYNC Geospatial Analysis course.
 # We are using data from the state of Florida.The overall goal is to perform a analysis with 
 # multi-criteria/sustainabiltiy analysis to select areas suitable 
-# for conservation.     
+# for conservation.
 #
 #Goal: Determine the ten (10) parcels of land within Clay County in the focus zone most suitable for purchase
 #towards conversion to land conservation.
@@ -66,24 +66,24 @@ create_dir_fun <- function(outDir,out_suffix=NULL){
 
 #####  Parameters and argument set up ###########
 
-in_dir_var <- "/nfs/bparmentier-data/Data/workshop_spatial/sesync2019_geospatial_workshop/Exercise_3/data"
-out_dir <- "/nfs/bparmentier-data/Data/workshop_spatial/sesync2019_geospatial_workshop/Exercise_3/outputs"
+in_dir_var <- "data"
+out_dir <- "."
 
-strat_hab_fname <- "Strat_hab_con_areas1.tif" #1)Strategic Habitat conservation areas raster file
-regional_counties_fname <- "Regional_Counties.shp" #2) County shapefile
-roads_fname <- "roads_counts.tif" #3) Roads count raster
-priority_wet_habitats_fname <- "Priority_Wet_Habitats1.tif" #4) Priority Wetlands Habitat raster file
-clay_parcels_fname <- "Clay_Parcels.shp" #5) Clay County parcel shapefile
-habitat_fname <- "Habitat.tif" #6) General Habitat raster file
-biodiversity_hotspot_fname <- "Biodiversity_Hot_Spots1.tif" #7) Biodiversity hotspot raster file
-florida_managed_areas_fname <- "flma_jun13.shp" #8) Florida managed areas shapefile
-focus_zone1_filename <- "focus_zone1.tif" #9) focus zone as raster file
+strat_hab_fname <- "Strat_hab_con_areas1/Strat_hab_con_areas1.tif" #1)Strategic Habitat conservation areas raster file
+regional_counties_fname <- "Regional_Counties" #2) County shapefile
+roads_fname <- "roads_counts/roads_counts.tif" #3) Roads count raster
+priority_wet_habitats_fname <- "Priority_Wet_Habitats1/Priority_Wet_Habitats1.tif" #4) Priority Wetlands Habitat raster file
+clay_parcels_fname <- "Clay_Parcels" #5) Clay County parcel shapefile
+habitat_fname <- "Habitat/Habitat.tif" #6) General Habitat raster file
+biodiversity_hotspot_fname <- "Biodiversity_Hot_Spots1/Biodiversity_Hot_Spots1.tif" #7) Biodiversity hotspot raster file
+florida_managed_areas_fname <- "flma_jun13" #8) Florida managed areas shapefile
+focus_zone1_filename <- "focus_zone1/focus_zone1.tif" #9) focus zone as raster file
 
 ##Additional data: 
 #roads_distance_exercise3.tif: distance to roads
 #r_flma_clay_bool_distance_exercise3.tif: distance to Florida Mangement Areas
 
-gdal_installed <- FALSE #if true use the system/shell command else use the distance layer provided
+gdal_installed <- TRUE #if true use the system/shell command else use the distance layer provided
 file_format <- ".tif" #PARAM5
 NA_flag_val <- -9999 #PARAM7
 out_suffix <-"exercise3_03212019" #output suffix for the files and ouptu folder #PARAM 8
@@ -100,9 +100,6 @@ if(is.null(out_dir)){
 out_suffix_s <- out_suffix #can modify name of output suffix
 if(create_out_dir_param==TRUE){
   out_dir <- create_dir_fun(out_dir,out_suffix_s)
-  setwd(out_dir)
-}else{
-  setwd(out_dir) #use previoulsy defined directory
 }
 
 ####  PART I: EXPLORE DATA READ AND DISPLAY INPUTS #######
@@ -167,6 +164,7 @@ r_ref <- crop(r_strat_hab,as.vector(st_bbox(clay_county_sf))[c(1, 3, 2, 4)]) #ma
 
 plot(r_ref)
 plot(clay_county_sf$geometry,border="red",add=T)
+
 r_clay <- rasterize(clay_county_sf,r_ref) #this can be used as mask for the study area
 freq(r_clay) #check the distribution of values: 1 and NA 
 
@@ -292,7 +290,7 @@ plot(r_bio_factor,main="Bio factor for suitability analysis")
 out_suffix_str <- paste0(names(r_bio_factor),"_",out_suffix) # this needs to be matching the number of outputs files writeRaste
 
 ##Write out raster file:
-writeRaster(r_bio_factor,filename="r_bio_factor_clay.tif",
+writeRaster(r_bio_factor,filename=file.path(out_dir,"r_bio_factor_clay.tif"),
             bylayer=T,datatype="FLT4S",options="COMPRESS=LZW",suffix=out_suffix_str,overwrite=T)
 
 ####  PART III : SUITABILITY LAYERS #######
@@ -309,6 +307,7 @@ writeRaster(r_bio_factor,filename="r_bio_factor_clay.tif",
 plot(r_roads,main="Roads_count in Clay county")
 r_roads_bool <- r_roads > 0
 plot(clay_county_sf$geometry,border="red",add=T)
+
 NAvalue(r_roads_bool ) <- 0 
 roads_bool_fname <- file.path(out_dir,paste0("roads_bool_",out_suffix,file_format))
 r_roads_bool <- writeRaster(r_roads_bool,filename=roads_bool_fname,overwrite=T)
@@ -318,7 +317,7 @@ r_roads_bool <- writeRaster(r_roads_bool,filename=roads_bool_fname,overwrite=T)
 r_flma_clay <- rasterize(flma_sf,r_clay,"OBJECTID_1",fun="max")
 
 r_flma_clay_bool <- r_flma_clay > 0
-NAvalue(r_flma_clay_bool) <- 0 
+NAvalue(r_flma_clay_bool) <- 0
 r_flma_clay_bool_fname <- file.path(out_dir,paste0("r_flma_clay_bool_",out_suffix,file_format))
 r_flma_clay_bool <- writeRaster(r_flma_clay_bool,filename=r_flma_clay_bool_fname,overwrite=T)
 plot(r_flma_clay_bool,"Management areas in Clay County")
@@ -327,12 +326,12 @@ plot(clay_county_sf$geometry,border="red",add=T)
 if(gdal_installed==TRUE){
   
   ## Roads
-  srcfile <- roads_bool_fname 
+  srcfile <- roads_bool_fname
   dstfile_roads <- file.path(out_dir,paste("roads_distance_",out_suffix,file_format,sep=""))
   n_values <- "1"
   
   ### Note that gdal_proximity doesn't like when path is too long
-  cmd_roads_str <- paste("gdal_proximity.py",basename(srcfile),basename(dstfile_roads),"-values",n_values,sep=" ")
+  cmd_roads_str <- paste("gdal_proximity.py",srcfile,dstfile_roads,"-values",n_values,sep=" ")
   #cmd_str <- paste("gdal_proximity.py", srcfile, dstfile,sep=" ")
   
   ### Prepare command for FLMA
@@ -342,7 +341,7 @@ if(gdal_installed==TRUE){
   n_values <- "1"
   
   ### Note that gdal_proximity doesn't like when path is too long
-  cmd_flma_str <- paste("gdal_proximity.py",basename(srcfile),basename(dstfile_flma),"-values",n_values,sep=" ")
+  cmd_flma_str <- paste("gdal_proximity.py",srcfile,dstfile_flma,"-values",n_values,sep=" ")
   #cmd_str <- paste("gdal_proximity.py", srcfile, dstfile,sep=" ")
   
   sys_os <- as.list(Sys.info())$sysname
@@ -398,7 +397,7 @@ plot(r_suitability_factor)
 
 out_suffix_str <- paste0(names(r_suitability_factor),"_",out_suffix) # this needs to be matching the number of outputs files writeRaste
 
-writeRaster(r_suitability_factor,filename="r_suitability_factor_clay.tif",
+writeRaster(r_suitability_factor,filename=file.path(out_dir,"r_suitability_factor_clay.tif"),
             bylayer=T,datatype="FLT4S",options="COMPRESS=LZW",suffix=out_suffix_str,overwrite=T)
 
 ### Step 3: summarize by parcels!!
@@ -415,10 +414,10 @@ parcels_avg_suitability <- extract(r_suitability_factor,parcels_focus_zone1_sf,f
 
 ## Select top 10 parcels to target for conservation
 parcels_avg_suitability <- parcels_avg_suitability[order(parcels_avg_suitability$suitability1,decreasing = T),] 
+
 plot(parcels_avg_suitability$suitability1,main="Suitability index by parcel in focus zone 1")
 
-p <- spplot(parcels_avg_suitability[1:10,],"suitability1",main="Selected top 10 parcels for possible conservation")
-print(p)
+spplot(parcels_avg_suitability[1:10,],"suitability1",main="Selected top 10 parcels for possible conservation")
 
 ##Figure of selected parcels
 plot(clay_county_sf$geometry,border="red",main="Selected parcels")
