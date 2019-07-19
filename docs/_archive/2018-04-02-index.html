@@ -1,3 +1,6 @@
+---
+---
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,15 +9,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intersections, Zonal Statistics, and Distance</title>
 <meta name="description" content="">
-<link rel="canonical"
-  href="http://cyberhelp.sesync.org/geospatial-suitability-analysis-lesson/course/archive.html">
-<link href="https://cdn.rawgit.com/sesync-ci/lesson-style/v2.0/docs/css/default.css" rel="stylesheet">
-<link href="https://cdn.rawgit.com/sesync-ci/lesson-style/v2.0/docs/css/syntax.css" rel="stylesheet">
-<link href="https://cdn.rawgit.com/sesync-ci/lesson-style/v2.0/docs/css/static.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    
+<link rel="canonical" href="http://cyberhelp.sesync.org/geospatial-suitability-analysis-lesson/course/archive.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sesync-ci/lesson-style@v1.3/docs/css/default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sesync-ci/lesson-style@v1.3/docs/css/static.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 
   </head>
   <body>
@@ -26,23 +24,22 @@
 
 <h2 style="text-transform: none;" id="conservation-suitability-in-florida">Conservation Suitability in Florida</h2>
 
-<p>Lesson 4 with <em>Benoit Parmentier</em></p>
+<p>Lesson 5 with <em>Benoit Parmentier</em></p>
 
-<nav id="ToC">
+<h2 id="contents">Contents</h2>
 
-  <ul>
-    <li><a href="#/slides/complete">Suitability Analysis</a></li>
-  </ul>
-</nav>
+<ul>
+  <li><a href="#/slides/complete">Suitability Analysis</a></li>
+</ul>
 
 <hr />
+
 <p><a name="/slides/complete"></a></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####################################   Suitability Analysis   #######################################</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####################################   Suitability Analysis   #######################################</span><span class="w">
 </span><span class="c1">############################  Selection of parcels for conservation   #######################################</span><span class="w">
-</span><span class="c1"># This script performs basic analyses for the Exercise 3 of the AGG and SESYNC Geospatial Analysis course.</span><span class="w">
-</span><span class="c1"># We are using data from the state of Florida.The overall goal is to perform a analysis with </span><span class="w">
-</span><span class="c1"># multi-criteria/sustainabiltiy analysis to select areas suitable </span><span class="w">
+</span><span class="c1"># This script performs basic analyses for the Exercise 3 of the workshop using Florida data.</span><span class="w">
+</span><span class="c1"># The overall goal is to perform a multi-criteria/sustainabiltiy analysis to select areas suitable </span><span class="w">
 </span><span class="c1"># for conservation.     </span><span class="w">
 </span><span class="c1">#</span><span class="w">
 </span><span class="c1">#Goal: Determine the ten (10) parcels of land within Clay County in the focus zone most suitable for purchase</span><span class="w">
@@ -50,12 +47,12 @@
 </span><span class="c1">#</span><span class="w">
 </span><span class="c1">#AUTHORS: Benoit Parmentier                                             </span><span class="w">
 </span><span class="c1">#DATE CREATED: 03/17/2017 </span><span class="w">
-</span><span class="c1">#DATE MODIFIED: 03/25/2019</span><span class="w">
+</span><span class="c1">#DATE MODIFIED: 04/02/2018</span><span class="w">
 </span><span class="c1">#Version: 2</span><span class="w">
-</span><span class="c1">#PROJECT: SESYNC and AAG 2019 workshop/Short Course preparation</span><span class="w">
+</span><span class="c1">#PROJECT: SESYNC and AAG 2018 workshop/Short Course preparation</span><span class="w">
 </span><span class="c1">#TO DO:</span><span class="w">
 </span><span class="c1">#</span><span class="w">
-</span><span class="c1">#COMMIT: general modif and adding sf</span><span class="w">
+</span><span class="c1">#COMMIT: testing code on virtual machine, AAG workshop</span><span class="w">
 </span><span class="c1">#</span><span class="w">
 </span><span class="c1">#################################################################################################</span><span class="w">
 
@@ -63,28 +60,166 @@
 
 </span><span class="n">library</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span><span class="w"> </span><span class="c1"># spatial/geographfic objects and functions</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">rgdal</span><span class="p">)</span><span class="w"> </span><span class="c1">#GDAL/OGR binding for R with functionalities</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span><span class="w"> </span><span class="c1">#spatial analyses operations, functions etc.</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">gtools</span><span class="p">)</span><span class="w"> </span><span class="c1"># contains mixsort and other useful functions</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rgdal: version: 1.2-18, (SVN revision 718)
+ Geospatial Data Abstraction Library extensions to R successfully loaded
+ Loaded GDAL runtime: GDAL 2.1.3, released 2017/20/01
+ Path to GDAL shared files: /usr/share/gdal/2.1
+ GDAL binary built with GEOS: TRUE 
+ Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+ Path to PROJ.4 shared files: (autodetected)
+ Linking to sp version: 1.2-7 
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span><span class="w"> </span><span class="c1">#spatial analyses operations, functions etc.</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: Matrix
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: spData
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">To</span> <span class="n">access</span> <span class="n">larger</span> <span class="n">datasets</span> <span class="k">in</span> <span class="n">this</span> <span class="k">package</span><span class="p">,</span> <span class="n">install</span> <span class="n">the</span> <span class="n">spDataLarge</span>
+<span class="k">package</span> <span class="k">with</span><span class="p">:</span> <span class="p">`</span><span class="n">install</span><span class="p">.</span><span class="n">packages</span><span class="p">(</span><span class="s1">'spDataLarge'</span><span class="p">,</span>
+<span class="n">repos</span><span class="p">=</span><span class="s1">'https://nowosad.github.io/drat/'</span><span class="p">,</span> <span class="n">type</span><span class="p">=</span><span class="s1">'source'</span><span class="p">))`</span>
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">gtools</span><span class="p">)</span><span class="w"> </span><span class="c1"># contains mixsort and other useful functions</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">maptools</span><span class="p">)</span><span class="w"> </span><span class="c1"># tools to manipulate spatial data</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span><span class="w"> </span><span class="c1"># parallel computation, part of base package no</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Checking rgeos availability: TRUE
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#library(parallel) # parallel computation, part of base package no</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">rasterVis</span><span class="p">)</span><span class="w"> </span><span class="c1"># raster visualization operations</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span><span class="w"> </span><span class="c1"># raster functionalities</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: raster
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: lattice
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: latticeExtra
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: RColorBrewer
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span><span class="w"> </span><span class="c1"># raster functionalities</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span><span class="w"> </span><span class="c1">#ARIMA forecasting</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">xts</span><span class="p">)</span><span class="w"> </span><span class="c1">#extension for time series object and analyses</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">zoo</span><span class="p">)</span><span class="w"> </span><span class="c1"># time series object and analysis</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Loading required package: zoo
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Attaching package: 'zoo'
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">zoo</span><span class="p">)</span><span class="w"> </span><span class="c1"># time series object and analysis</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">lubridate</span><span class="p">)</span><span class="w"> </span><span class="c1"># dates functionality</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">colorRamps</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains matlab.like color palette</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Attaching package: 'lubridate'
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:base':
+
+    date
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">colorRamps</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains matlab.like color palette</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">rgeos</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains topological operations</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">sphet</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains spreg, spatial regression modeling</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">BMS</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains hex2bin and bin2hex, Bayesian methods</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rgeos version: 0.3-26, (SVN revision 560)
+ GEOS runtime version: 3.5.1-CAPI-1.9.1 r4246 
+ Linking to sp version: 1.2-5 
+ Polygon checking: TRUE 
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">sphet</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains spreg, spatial regression modeling</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Attaching package: 'sphet'
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:raster':
+
+    distance
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">BMS</span><span class="p">)</span><span class="w"> </span><span class="c1">#contains hex2bin and bin2hex, Bayesian methods</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">bitops</span><span class="p">)</span><span class="w"> </span><span class="c1"># function for bitwise operations</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">foreign</span><span class="p">)</span><span class="w"> </span><span class="c1"># import datasets from SAS, spss, stata and other sources</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">gdata</span><span class="p">)</span><span class="w"> </span><span class="c1">#read xls, dbf etc., not recently updated but useful</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">classInt</span><span class="p">)</span><span class="w"> </span><span class="c1">#methods to generate class limits</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdata: read.xls support for 'XLS' (Excel 97-2004) files ENABLED.
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdata: read.xls support for 'XLSX' (Excel 2007+) files ENABLED.
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Attaching package: 'gdata'
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following objects are masked from 'package:xts':
+
+    first, last
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following objects are masked from 'package:raster':
+
+    resample, trim
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:stats':
+
+    nobs
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:utils':
+
+    object.size
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:base':
+
+    startsWith
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">classInt</span><span class="p">)</span><span class="w"> </span><span class="c1">#methods to generate class limits</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">plyr</span><span class="p">)</span><span class="w"> </span><span class="c1">#data wrangling: various operations for splitting, combining data</span><span class="w">
-</span><span class="c1">#library(gstat) #spatial interpolation and kriging methods</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Attaching package: 'plyr'
+</code></pre></div></div>
+
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The following object is masked from 'package:lubridate':
+
+    here
+</code></pre></div></div>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#library(gstat) #spatial interpolation and kriging methods</span><span class="w">
 </span><span class="n">library</span><span class="p">(</span><span class="n">readxl</span><span class="p">)</span><span class="w"> </span><span class="c1">#functionalities to read in excel type data</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span><span class="w">
 
 </span><span class="c1">###### Functions used in this script</span><span class="w">
 
@@ -106,27 +241,27 @@
 
 </span><span class="c1">#####  Parameters and argument set up ###########</span><span class="w">
 
-</span><span class="n">in_dir_var</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"data"</span><span class="w">
+</span><span class="n">in_dir_var</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"../data"</span><span class="w">
 </span><span class="n">out_dir</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"."</span><span class="w">
 
-</span><span class="n">strat_hab_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Strat_hab_con_areas1/Strat_hab_con_areas1.tif"</span><span class="w"> </span><span class="c1">#1)Strategic Habitat conservation areas raster file</span><span class="w">
+</span><span class="n">strat_hab_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Strat_hab_con_areas1"</span><span class="w"> </span><span class="c1">#1)Strategic Habitat conservation areas raster file</span><span class="w">
 </span><span class="n">regional_counties_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Regional_Counties"</span><span class="w"> </span><span class="c1">#2) County shapefile</span><span class="w">
-</span><span class="n">roads_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"roads_counts/roads_counts.tif"</span><span class="w"> </span><span class="c1">#3) Roads count raster</span><span class="w">
-</span><span class="n">priority_wet_habitats_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Priority_Wet_Habitats1/Priority_Wet_Habitats1.tif"</span><span class="w"> </span><span class="c1">#4) Priority Wetlands Habitat raster file</span><span class="w">
+</span><span class="n">roads_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"roads_counts"</span><span class="w"> </span><span class="c1">#3) Roads count raster</span><span class="w">
+</span><span class="n">priority_wet_habitats_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Priority_Wet_Habitats1"</span><span class="w"> </span><span class="c1">#4) Priority Wetlands Habitat raster file</span><span class="w">
 </span><span class="n">clay_parcels_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Clay_Parcels"</span><span class="w"> </span><span class="c1">#5) Clay County parcel shapefile</span><span class="w">
-</span><span class="n">habitat_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Habitat/Habitat.tif"</span><span class="w"> </span><span class="c1">#6) General Habitat raster file</span><span class="w">
-</span><span class="n">biodiversity_hotspot_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Biodiversity_Hot_Spots1/Biodiversity_Hot_Spots1.tif"</span><span class="w"> </span><span class="c1">#7) Biodiversity hotspot raster file</span><span class="w">
+</span><span class="n">habitat_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Habitat"</span><span class="w"> </span><span class="c1">#6) General Habitat raster file</span><span class="w">
+</span><span class="n">biodiversity_hotspot_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"Biodiversity_Hot_Spots1"</span><span class="w"> </span><span class="c1">#7) Biodiversity hotspot raster file</span><span class="w">
 </span><span class="n">florida_managed_areas_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"flma_jun13"</span><span class="w"> </span><span class="c1">#8) Florida managed areas shapefile</span><span class="w">
-</span><span class="n">focus_zone1_filename</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"focus_zone1/focus_zone1.tif"</span><span class="w"> </span><span class="c1">#9) focus zone as raster file</span><span class="w">
+</span><span class="n">focus_zone1_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"focus_zone1"</span><span class="w"> </span><span class="c1">#9) focus zone as raster file</span><span class="w">
 
 </span><span class="c1">##Additional data: </span><span class="w">
 </span><span class="c1">#roads_distance_exercise3.tif: distance to roads</span><span class="w">
 </span><span class="c1">#r_flma_clay_bool_distance_exercise3.tif: distance to Florida Mangement Areas</span><span class="w">
 
-</span><span class="n">gdal_installed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="c1">#if true use the system/shell command else use the distance layer provided</span><span class="w">
+</span><span class="n">gdal_installed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="c1">#if true use the system/shell command else use the distance layer provided</span><span class="w">
 </span><span class="n">file_format</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">".tif"</span><span class="w"> </span><span class="c1">#PARAM5</span><span class="w">
 </span><span class="n">NA_flag_val</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">-9999</span><span class="w"> </span><span class="c1">#PARAM7</span><span class="w">
-</span><span class="n">out_suffix</span><span class="w"> </span><span class="o">&lt;-</span><span class="s2">"exercise3_03212019"</span><span class="w"> </span><span class="c1">#output suffix for the files and ouptu folder #PARAM 8</span><span class="w">
+</span><span class="n">out_suffix</span><span class="w"> </span><span class="o">&lt;-</span><span class="s2">"exercise3_04022018"</span><span class="w"> </span><span class="c1">#output suffix for the files and ouptu folder #PARAM 8</span><span class="w">
 </span><span class="n">create_out_dir_param</span><span class="o">=</span><span class="kc">TRUE</span><span class="w"> </span><span class="c1">#PARAM9</span><span class="w">
 
 </span><span class="c1">################# START SCRIPT ###############################</span><span class="w">
@@ -134,18 +269,18 @@
 </span><span class="c1">## First create an output directory</span><span class="w">
 
 </span><span class="k">if</span><span class="p">(</span><span class="nf">is.null</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)){</span><span class="w">
-  </span><span class="n">out_dir</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dirname</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">)</span><span class="w"> </span><span class="c1">#output will be created in the input dir</span><span class="w">
+  </span><span class="n">out_dir</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dirname</span><span class="p">(</span><span class="n">in_dir</span><span class="p">)</span><span class="w"> </span><span class="c1">#output will be created in the input dir</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
 </span><span class="n">out_suffix_s</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">out_suffix</span><span class="w"> </span><span class="c1">#can modify name of output suffix</span><span class="w">
 </span><span class="k">if</span><span class="p">(</span><span class="n">create_out_dir_param</span><span class="o">==</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
   </span><span class="n">out_dir</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">create_dir_fun</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="n">out_suffix_s</span><span class="p">)</span><span class="w">
+  </span><span class="n">setwd</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w">
+  </span><span class="n">setwd</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span><span class="w"> </span><span class="c1">#use previoulsy defined directory</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####  PART I: EXPLORE DATA READ AND DISPLAY INPUTS #######</span><span class="w">
+</span><span class="c1">####  PART I: EXPLORE DATA READ AND DISPLAY INPUTS #######</span><span class="w">
 
 </span><span class="c1">##Inputs:</span><span class="w">
 </span><span class="c1">#1) Strategic Habitat conservation areas raster file</span><span class="w">
@@ -159,66 +294,55 @@
 </span><span class="c1">#9) Focus area as raster file</span><span class="w">
 
 </span><span class="c1">## Read in the datasets</span><span class="w">
-</span><span class="n">r_strat_hab</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">strat_hab_fname</span><span class="p">))</span><span class="w">
-</span><span class="n">reg_counties_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">regional_counties_fname</span><span class="p">))</span><span class="w"> 
+</span><span class="n">r_strat_hab</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">strat_hab_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">strat_hab_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
+</span><span class="n">reg_counties_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readOGR</span><span class="p">(</span><span class="n">dsn</span><span class="o">=</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">regional_counties_fname</span><span class="p">)</span><span class="w"> 
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `Regional_Counties' from data source `/nfs/public-data/training/Regional_Counties' using driver `ESRI Shapefile'
-Simple feature collection with 9 features and 9 fields
-geometry type:  POLYGON
-dimension:      XY
-bbox:           xmin: 481435.6 ymin: 551571.3 xmax: 648655 ymax: 732887.8
-epsg (SRID):    NA
-proj4string:    +proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OGR data source with driver: ESRI Shapefile 
+Source: "/nfs/public-data/training", layer: "Regional_Counties"
+with 9 features
+It has 9 fields
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_roads</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">roads_fname</span><span class="p">))</span><span class="w">
-</span><span class="n">r_priority_wet_hab</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">priority_wet_habitats_fname</span><span class="p">))</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_roads</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">roads_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">roads_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
+</span><span class="n">r_priority_wet_hab</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">priority_wet_habitats_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">priority_wet_habitats_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
 
-</span><span class="n">clay_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">clay_parcels_fname</span><span class="p">))</span><span class="w"> </span><span class="c1">#large file</span><span class="w">
+</span><span class="n">clay_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readOGR</span><span class="p">(</span><span class="n">dsn</span><span class="o">=</span><span class="n">in_dir_var</span><span class="p">,</span><span class="w"> </span><span class="n">clay_parcels_fname</span><span class="p">)</span><span class="w"> </span><span class="c1">#large file</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `Clay_Parcels' from data source `/nfs/public-data/training/Clay_Parcels' using driver `ESRI Shapefile'
-Simple feature collection with 84601 features and 139 fields
-geometry type:  MULTIPOLYGON
-dimension:      XY
-bbox:           xmin: 323071.4 ymin: 1959054 xmax: 464851.3 ymax: 2131342
-epsg (SRID):    NA
-proj4string:    +proj=tmerc +lat_0=24.33333333333333 +lon_0=-81 +k=0.9999411764705882 +x_0=199999.9999999999 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OGR data source with driver: ESRI Shapefile 
+Source: "/nfs/public-data/training", layer: "Clay_Parcels"
+with 84601 features
+It has 139 fields
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_habitat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">habitat_fname</span><span class="p">))</span><span class="w">
-</span><span class="n">r_bio_hotspot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">biodiversity_hotspot_fname</span><span class="p">))</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_habitat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">habitat_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">habitat_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
+</span><span class="n">r_bio_hotspot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">biodiversity_hotspot_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">biodiversity_hotspot_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
 
-</span><span class="n">flma_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">florida_managed_areas_fname</span><span class="p">))</span><span class="w"> 
+</span><span class="n">flma_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readOGR</span><span class="p">(</span><span class="n">dsn</span><span class="o">=</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">florida_managed_areas_fname</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reading layer `flma_jun13' from data source `/nfs/public-data/training/flma_jun13' using driver `ESRI Shapefile'
-Simple feature collection with 2220 features and 33 fields
-geometry type:  MULTIPOLYGON
-dimension:      XY
-bbox:           xmin: 65060.63 ymin: 33530.1 xmax: 793307.1 ymax: 780277.9
-epsg (SRID):    NA
-proj4string:    +proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OGR data source with driver: ESRI Shapefile 
+Source: "/nfs/public-data/training", layer: "flma_jun13"
+with 2220 features
+It has 33 fields
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_focus_zone1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">focus_zone1_filename</span><span class="p">))</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_focus_zone1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="p">(</span><span class="n">file.path</span><span class="p">(</span><span class="n">in_dir_var</span><span class="p">,</span><span class="n">focus_zone1_fname</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">focus_zone1_fname</span><span class="p">,</span><span class="s2">"tif"</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">"."</span><span class="p">)))</span><span class="w">
 
 </span><span class="c1">## Visualize a few datasets</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_strat_hab</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"strategic habitat"</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">reg_counties_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">reg_counties_sp</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-2-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">r_priority_wet_hab</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Priority wetland habitat"</span><span class="p">)</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">r_priority_wet_hab</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Priority wetland habitat"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-3-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-2.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#plot(r_habitat,add=T)</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#plot(r_habitat,add=T)</span><span class="w">
 
 </span><span class="c1">##### Before starting the production of the sustainability factor let's check the projection, </span><span class="w">
 </span><span class="c1">#resolution for each layer relevant to the calculation</span><span class="w">
@@ -244,7 +368,7 @@ proj4string:    +proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000
 [1] 100 100
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">lapply</span><span class="p">(</span><span class="n">list_raster</span><span class="p">,</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">projection</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span><span class="w"> </span><span class="c1">#spatial projection</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">lapply</span><span class="p">(</span><span class="n">list_raster</span><span class="p">,</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">projection</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span><span class="w"> </span><span class="c1">#spatial projection</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1]]
@@ -260,7 +384,7 @@ proj4string:    +proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000
 [1] "+proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000 +y_0=0 +ellps=GRS80 +units=m +no_defs"
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">lapply</span><span class="p">(</span><span class="n">list_raster</span><span class="p">,</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">extent</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span><span class="w"> </span><span class="c1">#extent of rasters</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">lapply</span><span class="p">(</span><span class="n">list_raster</span><span class="p">,</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">extent</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span><span class="w"> </span><span class="c1">#extent of rasters</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1]]
@@ -292,32 +416,27 @@ ymin        : 56824.82
 ymax        : 781624.8 
 </code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### PART 0: generate reference layer</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### PART 0: generate reference layer</span><span class="w">
 
 </span><span class="c1">## Let's use the resolution 55x55 m as the reference since it corresponds to finer resolution relevant</span><span class="w">
 </span><span class="c1"># for this study. The focus region provides the extent for the final step.</span><span class="w">
 </span><span class="c1">## Select clay county</span><span class="w">
-</span><span class="n">clay_county_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">reg_counties_sf</span><span class="p">,</span><span class="n">NAME</span><span class="o">==</span><span class="s2">"CLAY"</span><span class="p">)</span><span class="w">
+</span><span class="n">clay_county_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">reg_counties_sp</span><span class="p">,</span><span class="n">NAME</span><span class="o">==</span><span class="s2">"CLAY"</span><span class="p">)</span><span class="w">
 
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_strat_hab</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"strategic habitat"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-5-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-3.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Crop r_strat_hab</span><span class="w">
-</span><span class="n">r_ref</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_strat_hab</span><span class="p">,</span><span class="n">as.vector</span><span class="p">(</span><span class="n">st_bbox</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="p">))[</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)])</span><span class="w"> </span><span class="c1">#make a reference image for use in the processing</span><span class="w">
-
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Crop r_strat_hab</span><span class="w">
+</span><span class="n">r_ref</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_strat_hab</span><span class="p">,</span><span class="n">clay_county_sp</span><span class="p">)</span><span class="w"> </span><span class="c1">#make a reference image for use in the processing</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_ref</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-6-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-4.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_clay</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rasterize</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="p">,</span><span class="n">r_ref</span><span class="p">)</span><span class="w"> </span><span class="c1">#this can be used as mask for the study area</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_clay</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rasterize</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">r_ref</span><span class="p">)</span><span class="w"> </span><span class="c1">#this can be used as mask for the study area</span><span class="w">
 </span><span class="n">freq</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#check the distribution of values: 1 and NA </span><span class="w">
 </span></code></pre></div></div>
 
@@ -326,24 +445,19 @@ ymax        : 781624.8
 [2,]    NA 256149
 </code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##Use raster of Clay county definining the study area to mask pixels</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##Use raster of Clay county definining the study area to mask pixels</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-8-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-5.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="nf">dim</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#number of rows and columns as well as number of layers/bands</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="nf">dim</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#number of rows and columns as well as number of layers/bands</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] 968 834   1
 </code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####  PART II :  HIGH BIODIVERSITY SUITABILITY LAYERS #######</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####  PART II :  HIGH BIODIVERSITY SUITABILITY LAYERS #######</span><span class="w">
 </span><span class="c1">## IDENTIFY LANDS WITH HIGH NATIVE BIODIVERSITY</span><span class="w">
 
 </span><span class="c1">### STEP 1: Strategic Habitat conservation areas</span><span class="w">
@@ -375,46 +489,45 @@ ymax        : 781624.8
 </span><span class="n">rc_strat_hab_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">reclassify</span><span class="p">(</span><span class="n">r_strat_hab_masked</span><span class="p">,</span><span class="w"> </span><span class="n">rclmat</span><span class="p">)</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">rc_strat_hab_reg</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Reclassified Strategic Habit in Clay County"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-10-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-6.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 2: Identify Lands With High Native Biodiversity based on species count </span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 2: Identify Lands With High Native Biodiversity based on species count </span><span class="w">
 
 </span><span class="c1">## Crop bio raster</span><span class="w">
-</span><span class="n">r_bio_hotspot_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_bio_hotspot</span><span class="p">,</span><span class="n">as.vector</span><span class="p">(</span><span class="n">st_bbox</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="p">))[</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)])</span><span class="w">
+</span><span class="n">r_bio_hotspot_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_bio_hotspot</span><span class="p">,</span><span class="n">clay_county_sp</span><span class="p">)</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_bio_hotspot_w</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-11-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-7.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#match resolution:</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#r_bio_clay_masked &lt;- mask(r_bio_hotspot_w,r_clay) ## Does not work!! because resolution don't match</span><span class="w">
+</span><span class="c1">#match resolution:</span><span class="w">
 </span><span class="n">projection</span><span class="p">(</span><span class="n">r_bio_hotspot_w</span><span class="p">)</span><span class="o">==</span><span class="n">projection</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#projection match</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] FALSE
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] TRUE
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">res</span><span class="p">(</span><span class="n">r_bio_hotspot_w</span><span class="p">)</span><span class="o">==</span><span class="n">res</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#the resolutions do not match, we will need to resample</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">res</span><span class="p">(</span><span class="n">r_bio_hotspot_w</span><span class="p">)</span><span class="o">==</span><span class="n">res</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">#the resolutions do not match, we will need to resample</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] FALSE FALSE
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Find about resample</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Find about resample</span><span class="w">
 </span><span class="c1">#?raster::resample #to find out about the resample function from the raster package</span><span class="w">
 </span><span class="n">r_bio_hotspot_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="o">::</span><span class="n">resample</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">r_bio_hotspot_w</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">r_clay</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="s2">"bilinear"</span><span class="p">)</span><span class="w"> </span><span class="c1">#Use resample to match resolutions</span><span class="w">
+
 </span><span class="n">r_bio_hotspot_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mask</span><span class="p">(</span><span class="n">r_bio_hotspot_reg</span><span class="p">,</span><span class="n">r_clay</span><span class="p">)</span><span class="w"> </span><span class="c1">## It now works because resolutions were matched</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_bio_hotspot_reg</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Resampled biodiversity layer to 55m"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-12-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-8.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### Reclassify using instructions/information given to us:</span><span class="w">
-
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### Reclassify using instructions/information given to us:</span><span class="w">
+ 
 </span><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="m">9</span><span class="p">,</span><span class="w">  
        </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w">  
        </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">7</span><span class="p">,</span><span class="w">  
@@ -425,11 +538,10 @@ ymax        : 781624.8
 
 </span><span class="n">plot</span><span class="p">(</span><span class="n">rc_bio_hotspot_reg</span><span class="p">,</span><span class="w"> </span><span class="n">main</span><span class="o">=</span><span class="s2">"Bio hotspot reclassified"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-13-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-9.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 3: Wetland priority </span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 3: Wetland priority </span><span class="w">
 
 </span><span class="c1">#Input data layer: Priority Wetland Habitats</span><span class="w">
 </span><span class="c1">#Criteria for value assignment: Values were assigned based on the number of focal species present in</span><span class="w">
@@ -446,21 +558,21 @@ ymax        : 781624.8
 <div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1] "+proj=aea +lat_1=24 +lat_2=31.5 +lat_0=24 +lon_0=-84 +x_0=400000 +y_0=0 +ellps=GRS80 +units=m +no_defs"
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Crop Wetland priority raster</span><span class="w">
-</span><span class="n">r_priority_wet_hab_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_priority_wet_hab</span><span class="p">,</span><span class="n">as.vector</span><span class="p">(</span><span class="n">st_bbox</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="p">))[</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)])</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">## Crop Wetland priority raster</span><span class="w">
+</span><span class="n">r_priority_wet_hab_w</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">crop</span><span class="p">(</span><span class="n">r_priority_wet_hab</span><span class="p">,</span><span class="n">clay_county_sp</span><span class="p">)</span><span class="w">
 
+</span><span class="c1">#r_priority_wet_hab_reg &lt;- mask(r_priority_wet_hab_w,r_clay) ## Does not work!! because resolution don't match</span><span class="w">
 </span><span class="c1">#match resolution:</span><span class="w">
 </span><span class="n">r_priority_wet_hab_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">raster</span><span class="o">::</span><span class="n">resample</span><span class="p">(</span><span class="n">r_priority_wet_hab_w</span><span class="p">,</span><span class="n">r_clay</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="s1">'bilinear'</span><span class="p">)</span><span class="w"> </span><span class="c1">#resolution matching the study region</span><span class="w">
 
-</span><span class="c1">#r_priority_wet_hab_reg &lt;- mask(r_priority_wet_hab_reg,r_clay) ## Does not work!! because resolution doesn't match</span><span class="w">
+</span><span class="c1">#r_priority_wet_hab_reg &lt;- mask(r_priority_wet_hab_reg,r_clay) ## Does not work!! because resolution don't match</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_priority_wet_hab_reg</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Priority Wetland Habitat resampled"</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-14-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-10.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### Now reclass</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### Now reclass</span><span class="w">
 </span><span class="c1">#The value of 9 was assigned to 10–12 wetland focal species, 8 was assigned to 7–9 wetland focal</span><span class="w">
 </span><span class="c1">#species, 7 was assigned to 4–6 wetland focal species and 4–6 upland focal species, 6 was assigned to</span><span class="w">
 </span><span class="c1">#1–3 wetland or upland focal species. The value 1 was assigned to all other cells.</span><span class="w">
@@ -489,14 +601,13 @@ ymax        : 781624.8
 [8,]    NA   4566
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">rc_priority_wet_hab_reg</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Priority Wetland Habitat reclassified"</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">rc_priority_wet_hab_reg</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Priority Wetland Habitat reclassified"</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-15-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-11.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 4: Combine all the three input criteria layers with weigthed/unweighted sum</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">### STEP 4: Combine all the three input criteria layers with weigthed/unweighted sum</span><span class="w">
 
 </span><span class="n">f_weights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">)</span><span class="o">/</span><span class="m">3</span><span class="w">
 </span><span class="n">r_bio_es_factor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">f_weights</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span><span class="n">rc_strat_hab_reg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="o">*</span><span class="n">rc_bio_hotspot_reg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">3</span><span class="p">]</span><span class="o">*</span><span class="n">rc_priority_wet_hab_reg</span><span class="p">)</span><span class="w"> </span><span class="c1">#weighted sum</span><span class="w">
@@ -506,22 +617,19 @@ ymax        : 781624.8
 
 </span><span class="n">r_bio_factor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">stack</span><span class="p">(</span><span class="n">r_bio_es_factor</span><span class="p">,</span><span class="n">r_bio_ws_factor</span><span class="p">)</span><span class="w">
 </span><span class="nf">names</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"equal_weights"</span><span class="p">,</span><span class="s2">"weigthed_sum"</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Bio factor for suitability analysis"</span><span class="p">)</span><span class="w">
+</span><span class="c1">#plot(r_bio_factor,main="Bio factor for suitability analysis")</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-16-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-12.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">out_suffix_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">),</span><span class="s2">"_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">)</span><span class="w"> </span><span class="c1"># this needs to be matching the number of outputs files writeRaste</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">out_suffix_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">),</span><span class="s2">"_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">)</span><span class="w"> </span><span class="c1"># this needs to be matching the number of outputs files writeRaste</span><span class="w">
 
 </span><span class="c1">##Write out raster file:</span><span class="w">
-</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">file.path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="s2">"r_bio_factor_clay.tif"</span><span class="p">),</span><span class="w">
+</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_bio_factor</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s2">"r_bio_factor_clay.tif"</span><span class="p">,</span><span class="w">
             </span><span class="n">bylayer</span><span class="o">=</span><span class="nb">T</span><span class="p">,</span><span class="n">datatype</span><span class="o">=</span><span class="s2">"FLT4S"</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="s2">"COMPRESS=LZW"</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="n">out_suffix_str</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####  PART III : SUITABILITY LAYERS #######</span><span class="w">
+</span><span class="c1">####  PART III : SUITABILITY LAYERS #######</span><span class="w">
 
 </span><span class="c1">#IDENTIFY POTENTIAL CONSERVATION LANDS IN RELATION WITH DISTANCE TO ROADS AND EXISTING MANAGED LANDS</span><span class="w">
 </span><span class="c1">#GOAL: Create two raster maps showing lands in Clay County, </span><span class="w">
@@ -533,41 +641,48 @@ ymax        : 781624.8
 
 </span><span class="c1">### Processs roads first</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_roads</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Roads_count in Clay county"</span><span class="p">)</span><span class="w">
-</span><span class="n">r_roads_bool</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">r_roads</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-18-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-13.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">NAvalue</span><span class="p">(</span><span class="n">r_roads_bool</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w"> 
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">r_roads_bool</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">r_roads</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="n">NAvalue</span><span class="p">(</span><span class="n">r_roads_bool</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w"> 
 </span><span class="n">roads_bool_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">file.path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="n">paste0</span><span class="p">(</span><span class="s2">"roads_bool_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">,</span><span class="n">file_format</span><span class="p">))</span><span class="w">
 </span><span class="n">r_roads_bool</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_roads_bool</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">roads_bool_fname</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
 
-</span><span class="c1">#setp 2: prepare files to create a distance to existing managed land</span><span class="w">
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in .local(x, filename, ...): Attempting to write a file to a path that does not exist:
+  ./output_exercise3_04022018
+</code></pre></div></div>
 
-</span><span class="n">r_flma_clay</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rasterize</span><span class="p">(</span><span class="n">flma_sf</span><span class="p">,</span><span class="n">r_clay</span><span class="p">,</span><span class="s2">"OBJECTID_1"</span><span class="p">,</span><span class="n">fun</span><span class="o">=</span><span class="s2">"max"</span><span class="p">)</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">#setp 2: prepare files to create a distance to existing managed land</span><span class="w">
 
+</span><span class="n">r_flma_clay</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rasterize</span><span class="p">(</span><span class="n">flma_sp</span><span class="p">,</span><span class="n">r_clay</span><span class="p">,</span><span class="s2">"OBJECTID_1"</span><span class="p">,</span><span class="n">fun</span><span class="o">=</span><span class="s2">"max"</span><span class="p">)</span><span class="w">
 </span><span class="n">r_flma_clay_bool</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">r_flma_clay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="w">
-</span><span class="n">NAvalue</span><span class="p">(</span><span class="n">r_flma_clay_bool</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="n">NAvalue</span><span class="p">(</span><span class="n">r_flma_clay_bool</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w"> 
 </span><span class="n">r_flma_clay_bool_fname</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">file.path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="n">paste0</span><span class="p">(</span><span class="s2">"r_flma_clay_bool_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">,</span><span class="n">file_format</span><span class="p">))</span><span class="w">
 </span><span class="n">r_flma_clay_bool</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_flma_clay_bool</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">r_flma_clay_bool_fname</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">r_flma_clay_bool</span><span class="p">,</span><span class="s2">"Management areas in Clay County"</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-19-1.png" alt=" " /></p>
 
-<p></p>
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error in .local(x, filename, ...): Attempting to write a file to a path that does not exist:
+  ./output_exercise3_04022018
+</code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">gdal_installed</span><span class="o">==</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">plot</span><span class="p">(</span><span class="n">r_flma_clay_bool</span><span class="p">,</span><span class="s2">"Management areas in Clay County"</span><span class="p">)</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-14.png" alt="plot of chunk unnamed-chunk-1" /></p>
+
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">gdal_installed</span><span class="o">==</span><span class="kc">TRUE</span><span class="p">){</span><span class="w">
   
   </span><span class="c1">## Roads</span><span class="w">
-  </span><span class="n">srcfile</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">roads_bool_fname</span><span class="w">
+  </span><span class="n">srcfile</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">roads_bool_fname</span><span class="w"> 
   </span><span class="n">dstfile_roads</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">file.path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="s2">"roads_distance_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">,</span><span class="n">file_format</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">))</span><span class="w">
   </span><span class="n">n_values</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
   
   </span><span class="c1">### Note that gdal_proximity doesn't like when path is too long</span><span class="w">
-  </span><span class="n">cmd_roads_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"gdal_proximity.py"</span><span class="p">,</span><span class="n">srcfile</span><span class="p">,</span><span class="n">dstfile_roads</span><span class="p">,</span><span class="s2">"-values"</span><span class="p">,</span><span class="n">n_values</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">)</span><span class="w">
+  </span><span class="n">cmd_roads_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"gdal_proximity.py"</span><span class="p">,</span><span class="n">basename</span><span class="p">(</span><span class="n">srcfile</span><span class="p">),</span><span class="n">basename</span><span class="p">(</span><span class="n">dstfile_roads</span><span class="p">),</span><span class="s2">"-values"</span><span class="p">,</span><span class="n">n_values</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">)</span><span class="w">
   </span><span class="c1">#cmd_str &lt;- paste("gdal_proximity.py", srcfile, dstfile,sep=" ")</span><span class="w">
   
   </span><span class="c1">### Prepare command for FLMA</span><span class="w">
@@ -577,7 +692,7 @@ ymax        : 781624.8
   </span><span class="n">n_values</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
   
   </span><span class="c1">### Note that gdal_proximity doesn't like when path is too long</span><span class="w">
-  </span><span class="n">cmd_flma_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"gdal_proximity.py"</span><span class="p">,</span><span class="n">srcfile</span><span class="p">,</span><span class="n">dstfile_flma</span><span class="p">,</span><span class="s2">"-values"</span><span class="p">,</span><span class="n">n_values</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">)</span><span class="w">
+  </span><span class="n">cmd_flma_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"gdal_proximity.py"</span><span class="p">,</span><span class="n">basename</span><span class="p">(</span><span class="n">srcfile</span><span class="p">),</span><span class="n">basename</span><span class="p">(</span><span class="n">dstfile_flma</span><span class="p">),</span><span class="s2">"-values"</span><span class="p">,</span><span class="n">n_values</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">)</span><span class="w">
   </span><span class="c1">#cmd_str &lt;- paste("gdal_proximity.py", srcfile, dstfile,sep=" ")</span><span class="w">
   
   </span><span class="n">sys_os</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">as.list</span><span class="p">(</span><span class="n">Sys.info</span><span class="p">())</span><span class="o">$</span><span class="n">sysname</span><span class="w">
@@ -614,152 +729,92 @@ ymax        : 781624.8
 </span><span class="n">max_val</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cellStats</span><span class="p">(</span><span class="n">r_flma_distance</span><span class="p">,</span><span class="n">max</span><span class="p">)</span><span class="w">
 </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">9</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="p">(</span><span class="n">max_val</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">min_val</span><span class="p">)</span><span class="w"> </span><span class="c1">#linear rescaling factor</span><span class="w">
 </span><span class="n">r_flma_dist</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">r_flma_distance</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w">
-</span></code></pre></div></div>
 
-<p></p>
-
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">####  PART IV : COMBINE FACTORS AND DETERMINE MOST SUITABLE PARCELS #######</span><span class="w">
+</span><span class="c1">####  PART IV : COMBINE FACTORS AND DETERMINE MOST SUITABLE PARCELS #######</span><span class="w">
 </span><span class="c1">#IDENTIFY POTENTIAL CONSERVATION LANDS IN RELATION TO PARCEL SUITABILITY</span><span class="w">
 </span><span class="c1">#GOAL: Create two raster maps showing parcels in Clay County, Florida that have would </span><span class="w">
 </span><span class="c1">#have higher conservation potential based on parcel values.</span><span class="w">
-</span><span class="c1">#First, factors must be combin  ed to generate a suitability index.</span><span class="w">
+</span><span class="c1">#First, factors must be combined to generate a suitability index.</span><span class="w">
 
 </span><span class="c1">### Step 1:  Combine distance factors with weights...</span><span class="w">
 </span><span class="n">f_weights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="w"> </span><span class="c1">#factor weights for distance to roads</span><span class="w">
 </span><span class="n">r_dist_factor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span><span class="n">r_roads_dist</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="o">*</span><span class="n">r_flma_dist</span><span class="w"> </span><span class="c1">#weighted sum with equal weight</span><span class="w">
 
-</span><span class="c1">### Step 2: Combine distance factor and bio factor</span><span class="w">
+</span><span class="c1">### Step 3: Combine distance factor and bio factor</span><span class="w">
 </span><span class="n">f_weights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">/</span><span class="m">3</span><span class="p">,</span><span class="m">1</span><span class="o">/</span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="c1">#We are weighting factor bio more for this exercise</span><span class="w">
 </span><span class="n">r_suitability_factor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span><span class="n">r_bio_factor</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f_weights</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="o">*</span><span class="n">r_dist_factor</span><span class="w"> </span><span class="c1">#weighted sum with equal weight</span><span class="w">
 </span><span class="nf">names</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"suitability1"</span><span class="p">,</span><span class="s2">"suitability2"</span><span class="p">)</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-21-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-15.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">out_suffix_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">),</span><span class="s2">"_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">)</span><span class="w"> </span><span class="c1"># this needs to be matching the number of outputs files writeRaste</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">out_suffix_str</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">),</span><span class="s2">"_"</span><span class="p">,</span><span class="n">out_suffix</span><span class="p">)</span><span class="w"> </span><span class="c1"># this needs to be matching the number of outputs files writeRaste</span><span class="w">
 
-</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="n">file.path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span><span class="s2">"r_suitability_factor_clay.tif"</span><span class="p">),</span><span class="w">
+</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s2">"r_suitability_factor_clay.tif"</span><span class="p">,</span><span class="w">
             </span><span class="n">bylayer</span><span class="o">=</span><span class="nb">T</span><span class="p">,</span><span class="n">datatype</span><span class="o">=</span><span class="s2">"FLT4S"</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="s2">"COMPRESS=LZW"</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="n">out_suffix_str</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 
-</span><span class="c1">### Step 3: summarize by parcels!!</span><span class="w">
+</span><span class="c1">### Write out later</span><span class="w">
+</span><span class="c1">#writeRaster(,"bio_factor_equal_weights.tif")</span><span class="w">
+</span><span class="c1">#writeRaster(subset(r_bio_factor,1),"bio_factor_equal_weights.tif")</span><span class="w">
+
+</span><span class="c1"># Step 3: summarize by parcels!!</span><span class="w">
 
 </span><span class="n">projection</span><span class="p">(</span><span class="n">r_focus_zone1</span><span class="p">)</span><span class="o">&lt;-</span><span class="w"> </span><span class="n">projection</span><span class="p">(</span><span class="n">r_clay</span><span class="p">)</span><span class="w">
 
-</span><span class="n">clay_sp_parcels_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_transform</span><span class="p">(</span><span class="n">clay_sf</span><span class="p">,</span><span class="n">projection</span><span class="p">(</span><span class="n">r_clay</span><span class="p">))</span><span class="w">
+</span><span class="n">clay_sp_parcels_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spTransform</span><span class="p">(</span><span class="n">clay_sp</span><span class="p">,</span><span class="n">projection</span><span class="p">(</span><span class="n">r_clay</span><span class="p">))</span><span class="w">
 
-</span><span class="n">focus_zone1_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_as_sfc</span><span class="p">(</span><span class="n">st_bbox</span><span class="p">(</span><span class="n">r_focus_zone1</span><span class="p">))</span><span class="w">
-
-</span><span class="n">parcels_focus_zone1_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_intersection</span><span class="p">(</span><span class="n">clay_sp_parcels_reg</span><span class="p">,</span><span class="n">focus_zone1_sf</span><span class="p">)</span><span class="w">
+</span><span class="n">parcels_focus_zone1_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">intersect</span><span class="p">(</span><span class="n">clay_sp_parcels_reg</span><span class="p">,</span><span class="n">r_focus_zone1</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: attribute variables are assumed to be spatially constant
-throughout all geometries
+<div class="output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning in intersect(x, y): non identical CRS
 </code></pre></div></div>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">parcels_avg_suitability</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extract</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">,</span><span class="n">parcels_focus_zone1_sf</span><span class="p">,</span><span class="n">fun</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span><span class="n">sp</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w"> </span><span class="c1">#takes about 2 minutes, check on docker!!</span><span class="w">
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">parcels_avg_suitability</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">extract</span><span class="p">(</span><span class="n">r_suitability_factor</span><span class="p">,</span><span class="n">parcels_focus_zone1_sp</span><span class="p">,</span><span class="n">fun</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span><span class="n">sp</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+</span><span class="c1">#spplot(parcels_avg_suitability,"equal_weights")</span><span class="w">
 
 </span><span class="c1">## Select top 10 parcels to target for conservation</span><span class="w">
 </span><span class="n">parcels_avg_suitability</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">parcels_avg_suitability</span><span class="p">[</span><span class="n">order</span><span class="p">(</span><span class="n">parcels_avg_suitability</span><span class="o">$</span><span class="n">suitability1</span><span class="p">,</span><span class="n">decreasing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">T</span><span class="p">),]</span><span class="w"> 
 </span><span class="n">plot</span><span class="p">(</span><span class="n">parcels_avg_suitability</span><span class="o">$</span><span class="n">suitability1</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Suitability index by parcel in focus zone 1"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-22-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-16.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="n">spplot</span><span class="p">(</span><span class="n">parcels_avg_suitability</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,],</span><span class="s2">"suitability1"</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Selected top 10 parcels for possible conservation"</span><span class="p">)</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="n">p</span><span class="o">&lt;-</span><span class="w"> </span><span class="n">spplot</span><span class="p">(</span><span class="n">parcels_avg_suitability</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,],</span><span class="s2">"suitability1"</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Selected top 10 parcels for possible conservation"</span><span class="p">)</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-23-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-17.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##Figure of selected parcels</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sf</span><span class="o">$</span><span class="n">geometry</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Selected parcels"</span><span class="p">)</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##Figure of selected parcels</span><span class="w">
+</span><span class="n">plot</span><span class="p">(</span><span class="n">clay_county_sp</span><span class="p">,</span><span class="n">border</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="n">main</span><span class="o">=</span><span class="s2">"Selected parcels"</span><span class="p">)</span><span class="w">
 </span><span class="n">plot</span><span class="p">(</span><span class="n">parcels_avg_suitability</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,],</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
-</span><span class="n">plot</span><span class="p">(</span><span class="n">focus_zone1_sf</span><span class="p">,</span><span class="n">add</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="/geospatial-suitability-analysis-lesson/images/complete/unnamed-chunk-24-1.png" alt=" " /></p>
 
-<p></p>
+<p><img src="https://cdn.jsdelivr.net/gh/sesync-ci/geospatial-suitability-analysis-lesson@v0.0/docs/images/complete/unnamed-chunk-1-18.png" alt="plot of chunk unnamed-chunk-1" /></p>
 
-<div class="language-r text-document highlighter-rouge" title="worksheet-4.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##############################   END OF SCRIPT    ##########################################</span><span class="w">
+<div class="language-r captioned text-document highlighter-rouge" title="worksheet-5.R"><div class="highlight"><pre class="highlight"><code><span class="c1">##############################   END OF SCRIPT    ##########################################</span><span class="w">
 </span></code></pre></div></div>
 
 <p class="ToS"><a href="#/slides/complete">Top of Section</a></p>
 
+<hr />
 
 
-        <hr>
 
-<p>If you need to catch-up before a section of code will work, just squish it's
-🍅 to copy code above it into your clipboard. Then paste into your interpreter's
-console, run, and you'll be ready to start in on that section. Code copied by
-both 🍅 and 📋 will also appear below, where you can edit first, and then copy,
-paste, and run again.</p>
-
-<div class="output">
-  <pre id="ketchup" contenteditable="true"><code># Nothing here yet!</code></pre>
-</div>
-
-<script>
-$(document).ready(function(){
-  
-  // Add code help icons to code blocks
-  $('.input, .text-document').append('<ul class="code-help">');
-  $('.code-help')
-    .append('<li class="clipboard">📋</li>');
-  $('.text-document:not(.no-eval) .code-help')
-    .append('<li class="ketchup">🍅</li>');
-
-  // Bind copy actions to mouse clicks on icons
-  var $ketchup = $('#ketchup');
-  var rng = document.createRange();
-  var sel = window.getSelection();
-  $('.ketchup').click(function(){
-    var $prev = $(this)
-      .parents('.text-document')
-      .prevAll('.text-document:has(.ketchup)');
-    $ketchup.find('code').text($prev.find('pre').text());
-    rng.selectNodeContents($ketchup[0]);
-    sel.removeAllRanges();
-    sel.addRange(rng);
-    document.execCommand("copy");
-    sel.removeAllRanges();
-  });
-  $('.text-document .clipboard').click(function(){
-    var pre = $(this).parents('.text-document').find('pre').text();
-    $ketchup.find('code').text(pre);
-    rng.selectNodeContents($ketchup[0]);
-    sel.removeAllRanges();
-    sel.addRange(rng);
-    document.execCommand("copy");
-    sel.removeAllRanges();
-  });
-  $('.input .clipboard').click(function(){
-    var pre = $(this).parents('.input').find('pre').text();
-    pre = pre.replace(/(^|\n)> */g, '$1');
-    $ketchup.find('code').text(pre);
-    rng.selectNodeContents($ketchup[0]);
-    sel.removeAllRanges();
-    sel.addRange(rng);
-    document.execCommand("copy");
-    sel.removeAllRanges();
-  });
-});
-</script>
       </div>
     </div>
-    <script>
-$(document).ready(function(){
-  // Add links to R and Python package repositories
-  $('a.rlib').map(function(){
-    this.href = 'https://cran.r-project.org/package=' + this.innerText;
-  });
-  $('a.pylib').map(function(){
-    this.href = 'https://pypi.python.org/pypi/' + this.innerText;
-  });
-});
+  <script>
+ var collection = document.getElementsByClassName('rlib');
+ for (var i = 0; i < collection.length; i++) {
+     var a = collection[i];
+     a.href = 'https://cran.r-project.org/package=' + a.innerText;
+ };
+ var collection = document.getElementsByClassName('pylib');
+ for (var i = 0; i < collection.length; i++) {
+     var a = collection[i];
+     a.href = 'https://pypi.python.org/pypi/' + a.innerText;
+ };
 </script>
 
   </body>

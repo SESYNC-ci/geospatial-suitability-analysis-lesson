@@ -109,7 +109,7 @@ if(create_out_dir_param==TRUE){
   out_dir <- create_dir_fun(out_dir,out_suffix_s)
 }
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 <p></p>
@@ -134,7 +134,7 @@ if(create_out_dir_param==TRUE){
 r_strat_hab <- raster(file.path(in_dir_var,strat_hab_fname))
 reg_counties_sf <- st_read(file.path(in_dir_var,regional_counties_fname)) 
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -155,7 +155,7 @@ r_priority_wet_hab <- raster(file.path(in_dir_var,priority_wet_habitats_fname))
 
 clay_sf <- st_read(file.path(in_dir_var,clay_parcels_fname)) #large file
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -176,7 +176,7 @@ r_bio_hotspot <- raster(file.path(in_dir_var,biodiversity_hotspot_fname))
 
 flma_sf <- st_read(file.path(in_dir_var,florida_managed_areas_fname)) 
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -198,8 +198,8 @@ r_focus_zone1 <- raster(file.path(in_dir_var,focus_zone1_filename))
 plot(r_strat_hab, main="strategic habitat")
 plot(reg_counties_sf$geometry,add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-2-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -209,8 +209,8 @@ plot(reg_counties_sf$geometry,add=T)
 ~~~r
 plot(r_priority_wet_hab, main="Priority wetland habitat")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-3-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -230,7 +230,7 @@ list_raster <- c(r_strat_hab,r_priority_wet_hab,r_habitat,r_bio_hotspot)
 ## Examine information on rasters using lapply
 lapply(list_raster,function(x){res(x)}) #spatial resolution
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -252,7 +252,7 @@ lapply(list_raster,function(x){res(x)}) #spatial resolution
 ~~~r
 lapply(list_raster,function(x){projection(x)}) #spatial projection
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -274,37 +274,37 @@ lapply(list_raster,function(x){projection(x)}) #spatial projection
 ~~~r
 lapply(list_raster,function(x){extent(x)}) #extent of rasters
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
 [[1]]
-class       : Extent 
-xmin        : 52650.4 
-xmax        : 793995.4 
-ymin        : 56824.82 
-ymax        : 781614.8 
+class      : Extent 
+xmin       : 52650.4 
+xmax       : 793995.4 
+ymin       : 56824.82 
+ymax       : 781614.8 
 
 [[2]]
-class       : Extent 
-xmin        : 52650.39 
-xmax        : 794025.4 
-ymin        : 56824.82 
-ymax        : 781774.8 
+class      : Extent 
+xmin       : 52650.39 
+xmax       : 794025.4 
+ymin       : 56824.82 
+ymax       : 781774.8 
 
 [[3]]
-class       : Extent 
-xmin        : 481073.7 
-xmax        : 648609 
-ymin        : 551568.7 
-ymax        : 732882.6 
+class      : Extent 
+xmin       : 481073.7 
+xmax       : 648609 
+ymin       : 551568.7 
+ymax       : 732882.6 
 
 [[4]]
-class       : Extent 
-xmin        : 52650.39 
-xmax        : 793950.4 
-ymin        : 56824.82 
-ymax        : 781624.8 
+class      : Extent 
+xmin       : 52650.39 
+xmax       : 793950.4 
+ymin       : 56824.82 
+ymax       : 781624.8 
 ~~~
 {:.output}
 
@@ -323,8 +323,8 @@ clay_county_sf <- subset(reg_counties_sf,NAME=="CLAY")
 
 plot(r_strat_hab, main="strategic habitat")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-5-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -338,8 +338,8 @@ r_ref <- crop(r_strat_hab,as.vector(st_bbox(clay_county_sf))[c(1, 3, 2, 4)]) #ma
 plot(r_ref)
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-6-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -350,7 +350,7 @@ plot(clay_county_sf$geometry,border="red",add=T)
 r_clay <- rasterize(clay_county_sf,r_ref) #this can be used as mask for the study area
 freq(r_clay) #check the distribution of values: 1 and NA 
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -369,8 +369,8 @@ freq(r_clay) #check the distribution of values: 1 and NA
 ##Use raster of Clay county definining the study area to mask pixels
 plot(r_clay)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-8-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-8-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -380,7 +380,7 @@ plot(r_clay)
 ~~~r
 dim(r_clay) #number of rows and columns as well as number of layers/bands
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -426,8 +426,8 @@ rclmat <- matrix(m, ncol=3, byrow=TRUE)
 rc_strat_hab_reg <- reclassify(r_strat_hab_masked, rclmat)
 plot(rc_strat_hab_reg,main="Reclassified Strategic Habit in Clay County")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-10-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-10-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -442,8 +442,8 @@ r_bio_hotspot_w <- crop(r_bio_hotspot,as.vector(st_bbox(clay_county_sf))[c(1, 3,
 plot(r_bio_hotspot_w)
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-11-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-11-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -454,7 +454,7 @@ plot(clay_county_sf$geometry,border="red",add=T)
 #match resolution:
 projection(r_bio_hotspot_w)==projection(r_clay) #projection match
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -466,7 +466,7 @@ projection(r_bio_hotspot_w)==projection(r_clay) #projection match
 ~~~r
 res(r_bio_hotspot_w)==res(r_clay) #the resolutions do not match, we will need to resample
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -482,8 +482,8 @@ r_bio_hotspot_reg <- raster::resample(x=r_bio_hotspot_w,y=r_clay, method="biline
 r_bio_hotspot_reg <- mask(r_bio_hotspot_reg,r_clay) ## It now works because resolutions were matched
 plot(r_bio_hotspot_reg,main="Resampled biodiversity layer to 55m")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-12-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-12-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -503,8 +503,8 @@ rc_bio_hotspot_reg <- reclassify(r_bio_hotspot_reg, rclmat)
 
 plot(rc_bio_hotspot_reg, main="Bio hotspot reclassified")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-13-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-13-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -525,7 +525,7 @@ plot(rc_bio_hotspot_reg, main="Bio hotspot reclassified")
 #check projection
 projection(r_priority_wet_hab)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -545,8 +545,8 @@ r_priority_wet_hab_reg <- raster::resample(r_priority_wet_hab_w,r_clay, method='
 plot(r_priority_wet_hab_reg,main="Priority Wetland Habitat resampled")
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-14-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-14-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -571,7 +571,7 @@ rc_priority_wet_hab_reg <- reclassify(r_priority_wet_hab_reg, rclmat)
 freq_tb <- freq(rc_priority_wet_hab_reg)
 freq_tb
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -592,8 +592,8 @@ freq_tb
 plot(rc_priority_wet_hab_reg,main="Priority Wetland Habitat reclassified")
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-15-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-15-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -613,8 +613,8 @@ r_bio_factor <- stack(r_bio_es_factor,r_bio_ws_factor)
 names(r_bio_factor) <- c("equal_weights","weigthed_sum")
 plot(r_bio_factor,main="Bio factor for suitability analysis")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-16-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-16-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -628,7 +628,7 @@ out_suffix_str <- paste0(names(r_bio_factor),"_",out_suffix) # this needs to be 
 writeRaster(r_bio_factor,filename=file.path(out_dir,"r_bio_factor_clay.tif"),
             bylayer=T,datatype="FLT4S",options="COMPRESS=LZW",suffix=out_suffix_str,overwrite=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 <p></p>
@@ -651,8 +651,8 @@ plot(r_roads,main="Roads_count in Clay county")
 r_roads_bool <- r_roads > 0
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-18-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-18-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -675,8 +675,8 @@ r_flma_clay_bool <- writeRaster(r_flma_clay_bool,filename=r_flma_clay_bool_fname
 plot(r_flma_clay_bool,"Management areas in Clay County")
 plot(clay_county_sf$geometry,border="red",add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-19-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-19-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -740,7 +740,7 @@ max_val <- cellStats(r_flma_distance,max)
 a = (9 - 0) /(max_val - min_val) #linear rescaling factor
 r_flma_dist <- r_flma_distance * a
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 <p></p>
@@ -764,8 +764,8 @@ r_suitability_factor <- f_weights[1]*r_bio_factor + f_weights[2]*r_dist_factor #
 names(r_suitability_factor) <- c("suitability1","suitability2")
 plot(r_suitability_factor)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-21-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-21-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -788,7 +788,7 @@ focus_zone1_sf <- st_as_sfc(st_bbox(r_focus_zone1))
 
 parcels_focus_zone1_sf <- st_intersection(clay_sp_parcels_reg,focus_zone1_sf)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 ~~~
@@ -805,8 +805,8 @@ parcels_avg_suitability <- extract(r_suitability_factor,parcels_focus_zone1_sf,f
 parcels_avg_suitability <- parcels_avg_suitability[order(parcels_avg_suitability$suitability1,decreasing = T),] 
 plot(parcels_avg_suitability$suitability1,main="Suitability index by parcel in focus zone 1")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-22-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-22-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -816,8 +816,8 @@ plot(parcels_avg_suitability$suitability1,main="Suitability index by parcel in f
 ~~~r
 spplot(parcels_avg_suitability[1:10,],"suitability1",main="Selected top 10 parcels for possible conservation")
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-23-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-23-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -830,8 +830,8 @@ plot(clay_county_sf$geometry,border="red",main="Selected parcels")
 plot(parcels_avg_suitability[1:10,],add=T)
 plot(focus_zone1_sf,add=T)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
-![ ]({{ site.baseurl }}/images/complete/unnamed-chunk-24-1.png)
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/complete/unnamed-chunk-24-1.png" %})
 {:.captioned}
 
 <p></p>
@@ -841,5 +841,5 @@ plot(focus_zone1_sf,add=T)
 ~~~r
 ##############################   END OF SCRIPT    ##########################################
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
